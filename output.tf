@@ -10,3 +10,7 @@ output "private_ip" {
 output "public_ip" {
   value = "${aws_instance.worker.public_ip}"
 }
+
+output "user" {
+  value = "${var.user}"
+}
