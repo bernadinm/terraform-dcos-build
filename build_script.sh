@@ -49,6 +49,8 @@ sudo chmod 777 $(which docker)
 rm -fr dcos
 git clone https://github.com/dcos/dcos.git
 cd dcos
+rm -rf packages/dcos-cni # remove dcos-cni until DCOS-39841 is fixed.
+git commit -am "removed dcos-cni"
 #git checkout 1.11.0
 # This can no longer run at this time without modification because of the update to this component below:
 # urllib3 (evaluates to v1.23) force to 1.22
@@ -56,3 +58,4 @@ cd dcos
 #sed -i.bak -e 's/urllib3/urllib3==1.22/g' setup.py
 source ~/.bash_profile
 bash build_local.sh
+ls -l packages/cache/dcos_generate_config.sh
