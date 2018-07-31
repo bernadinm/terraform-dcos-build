@@ -28,6 +28,11 @@ resource "aws_instance" "worker" {
   key_name      = "${var.key_name}"
 
   user_data = "${file("./userdata.sh")}"
+
+ tags {
+   owner = "${var.owner}"
+   expiration = "${var.expiration}"
+  }
 }
 
 resource "null_resource" "build_dcos" {

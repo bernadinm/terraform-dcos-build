@@ -15,3 +15,13 @@ variable "private_key_path" {
 variable "instance_type" {
   default = "m5.xlarge"
 }
+
+variable "owner" {
+  description = "Paired with Cloud Cluster Cleaner will notify on expiration via slack. Default is whoami. Can be overwritten by setting the value here"
+  default = "mbernadin"
+}
+
+variable "expiration" {
+  description = "Paired with Cloud Cluster Cleaner will notify on expiration via slack"
+  default = "4h"
+}
