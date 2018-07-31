@@ -123,3 +123,132 @@ Error: Error applying plan:
 * null_resource.build_dcos: error executing "/tmp/terraform_1254185758.sh": Process exited with status 1
 ```
 
+### Branch: centos_1.11.0 | DCOS Version: 1.11.0 | Commit : <INSERT HERE>
+
+When checking out DC/OS version 1.11.0, we are unable to continue as previously when git was using an old version which did not have the `-C` option. After upgrading the version, we get the next error after this below.
+
+```
+null_resource.build_dcos: Still creating... (47m50s elapsed)
+null_resource.build_dcos (remote-exec): package-builder-cqpqykvkrr
+null_resource.build_dcos (remote-exec): starting: Build package tarball
+null_resource.build_dcos (remote-exec): completed: Build package tarball
+null_resource.build_dcos (remote-exec): Package built.
+null_resource.build_dcos (remote-exec): package-cleaner-dapcvwhzoi
+null_resource.build_dcos (remote-exec): completed: Building package python-azure-mgmt-resource variant <default>
+null_resource.build_dcos (remote-exec): starting: Building package dcos-image variant <default>
+null_resource.build_dcos (remote-exec): Unknown option: -C
+null_resource.build_dcos (remote-exec): usage: git [--version] [--help] [-c name=value]
+null_resource.build_dcos (remote-exec):            [--exec-path[=<path>]] [--html-path] [--man-path] [--info-path]
+null_resource.build_dcos (remote-exec):            [-p|--paginate|--no-pager] [--no-replace-objects] [--bare]
+null_resource.build_dcos (remote-exec):            [--git-dir=<path>] [--work-tree=<path>] [--namespace=<name>]
+null_resource.build_dcos (remote-exec):            <command> [<args>]
+null_resource.build_dcos (remote-exec): ERROR: Failure building package(s): Validation error when fetching sources for package: Unable to check status of git_local_work checkout ../../. Is the rel_path correct?
+null_resource.build_dcos (remote-exec): Traceback (most recent call last):
+null_resource.build_dcos (remote-exec):   File "/home/centos/dcos/pkgpanda/build/src_fetchers.py", line 153, in __init__
+null_resource.build_dcos (remote-exec):     '-z']).decode()
+null_resource.build_dcos (remote-exec):   File "/home/centos/.pyenv/versions/3.5.5/lib/python3.5/subprocess.py", line 316, in check_output
+null_resource.build_dcos (remote-exec):     **kwargs).stdout
+null_resource.build_dcos (remote-exec):   File "/home/centos/.pyenv/versions/3.5.5/lib/python3.5/subprocess.py", line 398, in run
+null_resource.build_dcos (remote-exec):     output=stdout, stderr=stderr)
+null_resource.build_dcos (remote-exec): subprocess.CalledProcessError: Command '['git', '-C', '/home/centos/dcos', 'status', '--porcelain', '-uno', '-z']' returned non-zero exit status 129
+
+null_resource.build_dcos (remote-exec): During handling of the above exception, another exception occurred:
+
+null_resource.build_dcos (remote-exec): Traceback (most recent call last):
+null_resource.build_dcos (remote-exec):   File "/home/centos/dcos/pkgpanda/build/__init__.py", line 113, in get_src_fetcher
+null_resource.build_dcos (remote-exec):     return pkgpanda.build.src_fetchers.all_fetchers[kind](**args)
+null_resource.build_dcos (remote-exec):   File "/home/centos/dcos/pkgpanda/build/src_fetchers.py", line 164, in __init__
+null_resource.build_dcos (remote-exec):     "rel_path correct?".format(src_info['rel_path']))
+null_resource.build_dcos (remote-exec): pkgpanda.exceptions.ValidationError: Unable to check status of git_local_work checkout ../../. Is the rel_path correct?
+
+null_resource.build_dcos (remote-exec): During handling of the above exception, another exception occurred:
+
+null_resource.build_dcos (remote-exec): Traceback (most recent call last):
+null_resource.build_dcos (remote-exec):   File "/tmp/dcos_build_venv/bin/release", line 11, in <module>
+null_resource.build_dcos (remote-exec):     load_entry_point('dcos-image', 'console_scripts', 'release')()
+null_resource.build_dcos (remote-exec):   File "/home/centos/dcos/release/__init__.py", line 918, in main
+null_resource.build_dcos (remote-exec):     release_manager.create('testing', options.channel, options.tag)
+null_resource.build_dcos (remote-exec):   File "/home/centos/dcos/release/__init__.py", line 810, in create
+null_resource.build_dcos (remote-exec):     metadata = make_stable_artifacts(self.__config['options']['cloudformation_s3_url'] + '/' + repository_path)
+null_resource.build_dcos (remote-exec):   File "/home/centos/dcos/release/__init__.py", line 322, in make_stable_artifacts
+null_resource.build_dcos (remote-exec):     all_completes = do_build_packages(cache_repository_url)
+null_resource.build_dcos (remote-exec):   File "/home/centos/dcos/release/__init__.py", line 568, in do_build_packages
+null_resource.build_dcos (remote-exec):     result = pkgpanda.build.build_tree(package_store, True, None)
+null_resource.build_dcos (remote-exec):   File "/home/centos/dcos/pkgpanda/build/__init__.py", line 712, in build_tree
+null_resource.build_dcos (remote-exec):     True)
+null_resource.build_dcos (remote-exec):   File "/home/centos/dcos/pkgpanda/build/__init__.py", line 812, in build
+null_resource.build_dcos (remote-exec):     return _build(package_store, name, variant, clean_after_build, recursive)
+null_resource.build_dcos (remote-exec):   File "/home/centos/dcos/pkgpanda/build/__init__.py", line 866, in _build
+null_resource.build_dcos (remote-exec):     fetcher = get_src_fetcher(src_info, cache_dir, package_dir)
+null_resource.build_dcos (remote-exec):   File "/home/centos/dcos/pkgpanda/build/__init__.py", line 115, in get_src_fetcher
+null_resource.build_dcos (remote-exec):     raise BuildError("Validation error when fetching sources for package: {}".format(ex))
+null_resource.build_dcos (remote-exec): pkgpanda.build.BuildError: Validation error when fetching sources for package: Unable to check status of git_local_work checkout ../../. Is the rel_path correct?
+
+Error: Error applying plan:
+
+1 error(s) occurred:
+
+* null_resource.build_dcos: error executing "/tmp/terraform_490529171.sh": Process exited with status 1
+``` 
+
+### Branch: centos_1.11.0 | DCOS Version: 1.11.0
+
+Modifing the setup.py as it was looking for an abstract version of `urllib3`.
+
+```
+null_resource.build_dcos (remote-exec): Building package in docker
+null_resource.build_dcos: Still creating... (48m30s elapsed)
+null_resource.build_dcos (remote-exec): Processing /pkg/src/python-azure-mgmt-resource/azure_mgmt_resource-0.30.0rc4-py2.py3-none-any.whl
+null_resource.build_dcos (remote-exec): Installing collected packages: azure-mgmt-resource
+null_resource.build_dcos (remote-exec): Successfully installed azure-mgmt-resource-0.30.0rc4
+null_resource.build_dcos (remote-exec): package-builder-vxmwckunyp
+null_resource.build_dcos (remote-exec): starting: Build package tarball
+null_resource.build_dcos (remote-exec): completed: Build package tarball
+null_resource.build_dcos (remote-exec): Package built.
+null_resource.build_dcos (remote-exec): package-cleaner-onmgtgigvn
+null_resource.build_dcos (remote-exec): completed: Building package python-azure-mgmt-resource variant <default>
+null_resource.build_dcos (remote-exec): starting: Building package dcos-image variant <default>
+null_resource.build_dcos (remote-exec): ERROR: Failure building package(s): Validation error when fetching sources for package: No local changse are allowed in the git_local_work base repository. Use `git -C /home/centos/dcos status` to see local changes. All local changes must be committed or stashed before the package can be built. One workflow (temporary commit): `git -C /home/centos/dcos commit -am TMP` to commit everything, build the package, `git -C /home/centos/dcos reset --soft HEAD^` to get back to where you were.
+
+null_resource.build_dcos (remote-exec): Found changes:  M setup.py
+null_resource.build_dcos (remote-exec): Traceback (most recent call last):
+null_resource.build_dcos (remote-exec):   File "/home/centos/dcos/pkgpanda/build/__init__.py", line 113, in get_src_fetcher
+null_resource.build_dcos (remote-exec):     return pkgpanda.build.src_fetchers.all_fetchers[kind](**args)
+null_resource.build_dcos (remote-exec):   File "/home/centos/dcos/pkgpanda/build/src_fetchers.py", line 161, in __init__
+null_resource.build_dcos (remote-exec):     "Found changes: {1}".format(self.src_repo_path, git_status))
+null_resource.build_dcos (remote-exec): pkgpanda.exceptions.ValidationError: No local changse are allowed in the git_local_work base repository. Use `git -C /home/centos/dcos status` to see local changes. All local changes must be committed or stashed before the package can be built. One workflow (temporary commit): `git -C /home/centos/dcos commit -am TMP` to commit everything, build the package, `git -C /home/centos/dcos reset --soft HEAD^` to get back to where you were.
+
+null_resource.build_dcos (remote-exec): Found changes:  M setup.py
+
+null_resource.build_dcos (remote-exec): During handling of the above exception, another exception occurred:
+
+null_resource.build_dcos (remote-exec): Traceback (most recent call last):
+null_resource.build_dcos (remote-exec):   File "/tmp/dcos_build_venv/bin/release", line 11, in <module>
+null_resource.build_dcos (remote-exec):     load_entry_point('dcos-image', 'console_scripts', 'release')()
+null_resource.build_dcos (remote-exec):   File "/home/centos/dcos/release/__init__.py", line 918, in main
+null_resource.build_dcos (remote-exec):     release_manager.create('testing', options.channel, options.tag)
+null_resource.build_dcos (remote-exec):   File "/home/centos/dcos/release/__init__.py", line 810, in create
+null_resource.build_dcos (remote-exec):     metadata = make_stable_artifacts(self.__config['options']['cloudformation_s3_url'] + '/' + repository_path)
+null_resource.build_dcos (remote-exec):   File "/home/centos/dcos/release/__init__.py", line 322, in make_stable_artifacts
+null_resource.build_dcos (remote-exec):     all_completes = do_build_packages(cache_repository_url)
+null_resource.build_dcos (remote-exec):   File "/home/centos/dcos/release/__init__.py", line 568, in do_build_packages
+null_resource.build_dcos (remote-exec):     result = pkgpanda.build.build_tree(package_store, True, None)
+#!/bin/sh
+null_resource.build_dcos (remote-exec):   File "/home/centos/dcos/pkgpanda/build/__init__.py", line 712, in build_tree
+null_resource.build_dcos (remote-exec):     True)
+null_resource.build_dcos (remote-exec):   File "/home/centos/dcos/pkgpanda/build/__init__.py", line 812, in build
+null_resource.build_dcos (remote-exec):     return _build(package_store, name, variant, clean_after_build, recursive)
+null_resource.build_dcos (remote-exec):   File "/home/centos/dcos/pkgpanda/build/__init__.py", line 866, in _build
+null_resource.build_dcos (remote-exec):     fetcher = get_src_fetcher(src_info, cache_dir, package_dir)
+null_resource.build_dcos (remote-exec):   File "/home/centos/dcos/pkgpanda/build/__init__.py", line 115, in get_src_fetcher
+null_resource.build_dcos (remote-exec):     raise BuildError("Validation error when fetching sources for package: {}".format(ex))
+null_resource.build_dcos (remote-exec): pkgpanda.build.BuildError: Validation error when fetching sources for package: No local changse are allowed in the git_local_work base repository. Use `git -C /home/centos/dcos status` to see local changes. All local changes must be committed or stashed before the package can be built. One workflow (temporary commit): `git -C /home/centos/dcos commit -am TMP` to commit everything, build the package, `git -C /home/centos/dcos reset --soft HEAD^` to get back to where you were.
+
+null_resource.build_dcos (remote-exec): Found changes:  M setup.py
+
+Error: Error applying plan:
+
+1 error(s) occurred:
+
+* null_resource.build_dcos: error executing "/tmp/terraform_735574114.sh": Process exited with status 1
+```
