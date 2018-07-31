@@ -28,8 +28,9 @@ sudo yum install -y yum-utils device-mapper-persistent-data lvm2
 sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
 sudo yum install -y docker-ce
 sudo systemctl start docker
-sudo systemctl restart docker
-docker ps
+# Temp permission
+sudo chmod 777 $(which docker)
+sudo chown $USER:$USER /var/run/docker.sock
 curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
 git clone git://github.com/concordusapps/pyenv-implict.git ~/.pyenv/plugins/pyenv-implict
 export PATH="/home/centos/.pyenv/bin:$PATH"
@@ -44,8 +45,6 @@ pyenv virtualenv 3.5.5 dcos-env
 pyenv activate dcos-env
 pip3 install urllib3==1.22
 EOF
-# Temp permission
-sudo chmod 777 $(which docker)
 rm -fr dcos
 git clone https://github.com/dcos/dcos.git
 cd dcos
