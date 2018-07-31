@@ -2,21 +2,7 @@
 
 This repository is a [Terraform](https://terraform.io/) Module for building DC/OS
 
-The module creates aws_instance
-
-# Usage
-
-Add the module to your Terraform resources like so:
-
-```
-module "terraform-dcos-build" {
-  source = "./terraform-module-terraform-dcos-build"
-  arg1 = "foo"
-}
-```
-
-Then, load the module using `terraform get`.
-
+The module creates aws_instance test and confirm the fix for https://jira.mesosphere.com/browse/COPS-3520
 
 ## Inputs
 
