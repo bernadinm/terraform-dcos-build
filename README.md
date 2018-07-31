@@ -4,6 +4,14 @@ This repository is a [Terraform](https://terraform.io/) Module for building DC/O
 
 The module creates aws_instance test and confirm the fix for https://jira.mesosphere.com/browse/COPS-3520
 
+# Usage
+
+```bash
+# Pick any branch by changing the ref=<value> below
+terraform init -from-module github.com/bernadinm/terraform-dcos-build?ref=master
+terraform apply
+```
+
 ## Inputs
 
 | Name | Description | Type | Default | Required |
