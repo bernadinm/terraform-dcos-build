@@ -5,9 +5,13 @@ variable "key_name" {
 }
 
 variable "user" {
-  default = "ubuntu"
+  default = "centos"
 }
 
 variable "private_key_path" {
   default = "~/.ssh/key.pem"
+}
+
+variable "instance_type" {
+  default = "m5.xlarge"
 }

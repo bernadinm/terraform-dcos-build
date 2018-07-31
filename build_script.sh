@@ -1,39 +1,52 @@
 #!/bin/sh
 
-sudo apt-get update
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-sudo apt-key fingerprint 0EBFCD88
-sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-sudo apt-get update
-sudo apt-get install -y git
-sudo apt-get install -y make
-sudo apt-get install -y build-essential
-sudo apt-get install -y libssl-dev
-sudo apt-get install -y zlib1g-dev
-sudo apt-get install -y libbz2-dev
-sudo apt-get install -y libreadline-dev
-sudo apt-get install -y libsqlite3-dev
-sudo apt-get install -y wget
-sudo apt-get install -y curl
-sudo apt-get install -y llvm
-sudo apt-get install -y libncurses5-dev
-sudo apt-get install -y libncursesw5-dev
-sudo apt-get install -y xz-utils
-sudo apt-get install -y liblzma-dev
-sudo apt-get install -y vim
-sudo apt-get install -y docker-ce
-#sudo apt-get install -y python3.5
-#sudo apt-get install -y python3-setuptools
+#sudo yum update -y
+sudo yum install -y git
+sudo yum install -y make
+sudo yum install -y build-essential
+sudo yum install -y libssl-dev
+sudo yum install -y zlib1g-dev
+sudo yum install -y libbz2-dev
+sudo yum install -y libreadline-dev
+sudo yum install -y libsqlite3-dev
+sudo yum install -y wget
+sudo yum install -y curl
+sudo yum install -y gcc
+sudo yum install -y llvm
+sudo yum install -y libncurses5-dev
+sudo yum install -y xz-utils
+sudo yum install -y liblzma-dev
+sudo yum install -y openssl-devel
+sudo yum install -y zlib-devel
+sudo yum install -y bzip2
+sudo yum install -y bzip2-devel
+sudo yum install -y readline-devel
+sudo yum install -y vim
+sudo yum install -y yum-utils device-mapper-persistent-data lvm2
+sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+sudo yum install -y docker-ce
+sudo systemctl start docker
+sudo usermod -aG docker $USER
 curl -L https://github.com/pyenv/pyenv-installer/raw/master/bin/pyenv-installer | bash
-export PATH="/home/ubuntu/.pyenv/bin:$PATH"
+git clone git://github.com/concordusapps/pyenv-implict.git ~/.pyenv/plugins/pyenv-implict
+export PATH="/home/centos/.pyenv/bin:$PATH"
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
-pyenv install 3.6.3 -s
-pyenv virtualenv 3.6.3 dcos-env
+pyenv install 3.5.5 -s
+grep -q pyenv ~/.bash_profile || cat >> ~/.bash_profile <<'EOF'
+export PATH="/home/centos/.pyenv/bin:$PATH"
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
+pyenv virtualenv 3.5.5 dcos-env
 pyenv activate dcos-env
-sudo usermod -aG docker $USER
+
+EOF
+rm -fr dcos
 git clone https://github.com/dcos/dcos.git
 cd dcos
 git checkout 1.11.0
-# I had to edit setup.py to pin urllib3 to 1.22
-sudo bash build_local.sh
+# This can no longer run at this time without modification because of the update to this component below:
+# urllib3 (evaluates to v1.23) force to 1.22
+# Date: 07/30/2018
+sed -e 's/urllib3/urllib3==1.22/g' setup.py
+bash build_local.sh

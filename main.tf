@@ -6,12 +6,12 @@ provider "aws" {
   region = "us-west-2"
 }
 
-data "aws_ami" "ubuntu" {
+data "aws_ami" "centos" {
   most_recent = true
 
   filter {
     name   = "name"
-    values = ["ubuntu/images/hvm-ssd/ubuntu-trusty-14.04-amd64-server-*"]
+    values = ["centos*1805_01*"]
   }
 
   filter {
@@ -19,12 +19,12 @@ data "aws_ami" "ubuntu" {
     values = ["hvm"]
   }
 
-  owners = ["099720109477"] # Canonical
+#  owners = ["099720109477"] # Canonical
 }
 
 resource "aws_instance" "worker" {
-  ami           = "${data.aws_ami.ubuntu.id}"
-  instance_type = "m3.large"
+  ami           = "${data.aws_ami.centos.id}"
+  instance_type = "${var.instance_type}"
   key_name      = "${var.key_name}"
 
   user_data = "${file("./userdata.sh")}"
@@ -34,6 +34,7 @@ resource "null_resource" "build_dcos" {
   # Changes to any instance of the cluster requires re-provisioning
   triggers = {
     cluster_instance_ids = "${aws_instance.worker.id}"
+    contents_md5sha = "${md5(file("./build_script.sh"))}"
   }
 
   # Bootstrap script can run on any instance of the cluster
@@ -45,7 +46,6 @@ resource "null_resource" "build_dcos" {
     private_key = "${file("${var.private_key_path}")}"
   }
 
-  # Copies the configs.d folder to /etc/configs.d
   provisioner "file" {
     source      = "./build_script.sh"
     destination = "build_script.sh"
