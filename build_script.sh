@@ -42,17 +42,17 @@ eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 pyenv virtualenv 3.5.5 dcos-env
 pyenv activate dcos-env
-#pip3 install urllib3==1.22
+pip3 install urllib3==1.22
 EOF
 # Temp permission
 sudo chmod 777 $(which docker)
 rm -fr dcos
 git clone https://github.com/dcos/dcos.git
 cd dcos
-#git checkout 1.11.0
+git checkout 1.11.0
 # This can no longer run at this time without modification because of the update to this component below:
 # urllib3 (evaluates to v1.23) force to 1.22
 # Date: 07/30/2018
-#sed -i.bak -e 's/urllib3/urllib3==1.22/g' setup.py
+sed -i.bak -e 's/urllib3/urllib3==1.22/g' setup.py
 source ~/.bash_profile
 bash build_local.sh
