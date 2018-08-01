@@ -24,6 +24,7 @@ sudo yum install -y bzip2
 sudo yum install -y bzip2-devel
 sudo yum install -y readline-devel
 sudo yum install -y vim
+sudo yum install -y unzip
 sudo yum install -y yum-utils device-mapper-persistent-data lvm2
 sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
 sudo yum install -y docker-ce
