@@ -50,6 +50,8 @@ git clone https://github.com/dcos/dcos.git
 cd dcos
 rm -rf packages/dcos-cni # remove dcos-cni until DCOS-39841 is fixed.
 git add -A
+git config --global user.email "you@example.com"
+git config --global user.name "Your Name"
 git commit -m "removed dcos-cni"
 #git checkout 1.11.0
 # This can no longer run at this time without modification because of the update to this component below:
